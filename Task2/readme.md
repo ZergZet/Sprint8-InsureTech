@@ -17,6 +17,7 @@
 
 ![VideoLOG](Log/HPA.gif)
 
+<!-- 
 # Приведение кластера в исходное состояние
 ## 1. Остановить Locust, если ещё работает (в его терминале Ctrl+C или)
 	pkill -f locust
@@ -33,3 +34,4 @@
 
 ## 5. Проверить, что чисто
 	kubectl get pods,deployment,service,hpa
+-->
