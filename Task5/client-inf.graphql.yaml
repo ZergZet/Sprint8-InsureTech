@@ -1,0 +1,54 @@
+schema {
+  query: Query
+}
+ 
+type Query {
+  """
+  Аналог GET /clients/{id}.
+  Получить информацию о клиенте по ID.
+  """
+  client(id: ID!): Client
+
+  """
+  Аналог GET /clients/{id}/documents.
+  Список документов клиента по ID клиента.
+  """
+  documents(clientId: ID!): [Document!]!
+
+  """
+  Аналог GET /clients/{id}/relatives.
+  Информация о родственниках клиента по ID клиента.
+  """
+  relatives(clientId: ID!): [Relative!]!
+}
+
+type Client {
+  id: ID!
+  name: String
+  age: Int
+
+  """
+  Документы клиента. Позволяет получить клиента и его документы одним запросом.
+  """
+  documents: [Document!]!
+
+  """
+  Родственники клиента. Позволяет получить клиента и его родственников одним запросом.
+  """
+  relatives: [Relative!]!
+}
+
+type Document {
+  id: ID!
+  type: String
+  number: String
+  issueDate: String
+  expiryDate: String
+}
+
+type Relative {
+  id: ID!
+  relationType: String
+  name: String
+  age: Int
+}
