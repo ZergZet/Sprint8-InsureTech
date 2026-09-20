@@ -1,0 +1,35 @@
+# Подготовка
+	minikube start
+	minikube addons enable metrics-server
+
+# Запуск
+	kubectl apply -f deployment.yaml
+	kubectl apply -f service.yaml
+	kubectl apply -f hpa.yaml
+
+# Запуск locust (в отдельном терминале)
+	locust -f locustfile.py --host $(minikube service scaletestapp --url | grep -E '^http' | head -n1) -u 3000 -r 2
+
+# Запуск dashboard (в отдельном терминале)
+	minikube dashboard
+
+# Результат (запускается 1 раз после обновления страницы, или в папке Log)
+
+![VideoLOG](Log/HPA.gif)
+
+# Приведение кластера в исходное состояние
+# 1. Остановить Locust, если ещё работает (в его терминале Ctrl+C или)
+	pkill -f locust
+
+# 2. Удалить HPA
+	kubectl delete hpa scaletestapp-hpa
+
+# 3. Скейлить Deployment в 0 (быстрее, чем ждать graceful termination)
+	kubectl scale deployment scaletestapp --replicas=0
+
+# 4. Удалить Deployment и Service
+	kubectl delete deployment scaletestapp
+	kubectl delete service scaletestapp
+
+# 5. Проверить, что чисто
+	kubectl get pods,deployment,service,hpa
